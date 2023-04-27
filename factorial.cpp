@@ -1,20 +1,26 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-
-long long int fact(long long int n){
-    long long int fact=1;
-    for(long long int i=1;i<=n;i++){
-      fact=fact*i;
+int factorial(int n){
+    //base condition
+    if(n==1){
+        return 1;
     }
-    return fact;
+
+    // int smallProb=factorial(n-1);  f(n)=n*f(n-1);
+    // int bigProb=n*smallProb;
+    // return bigProb;
+    return n*factorial(n-1);
 }
 
 
 int main(){
-  long long int n;
+  int n;//n=5
   cin>>n;
-  cout<<fact(n)<<endl;
-    return 0;
+  int ans=factorial(n);
+  cout<<ans<<endl;
+
+  return 0;
 }
+
 
