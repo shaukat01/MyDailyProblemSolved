@@ -1,11 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-
 void topo(vector<vector<int>> &adj, int n)
 {
 
-    // step-1:Create Indedsfgree Array and fill
+    // step-1:Create Indegree Array and fill
     vector<int> indeg(n + 1);
     for (int i = 1; i <= n; i++)
     {
