@@ -1,46 +1,33 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
-
-
 void binomial(int n, int r)
 {
-    int c=0;
-    int arr[n + 1][r + 1];
+    int b[100][100];
     for (int i = 0; i <= n; i++)
     {
-        for (int j = 0; j <= min(n, r); j++)
+        for (int j = 0; j <= r; j++)
         {
-            if (i == 0 && j == 0)
-            { c++;
-                arr[i][j] = 0;
-            }
-            else if (i == j || j == 0)
+            if (j == 0 || i == j)
             {
-                c++;
-                arr[i][j] = 1;
+                b[i][j] = 1;
             }
             else
             {
-                c++;
-                arr[i][j] = arr[i - 1][j] + arr[i - 1][j - 1];
+                b[i][j] = b[i - 1][j] + b[i - 1][j - 1];
             }
         }
     }
-    cout << "The Binomial Matrix is: " << endl;
+    cout << "Binomial Matrix is: " << b[n][r] << endl;
+    cout << "Binomial Metrix is: " << endl;
     for (int i = 0; i <= n; i++)
     {
-        for (int j = 0; j <= min(n, r); j++)
+        for (int j = 0; j <=r; j++)
         {
-            cout << arr[i][j] << " ";
+            cout << b[i][j] << " ";
         }
         cout << endl;
     }
-    cout << endl;
-    cout << "The Binomial are: " << endl;
-    cout << arr[n][r] << endl;
-    cout<<"count is: "<<c;
 }
-
 int main()
 {
     int n, r;

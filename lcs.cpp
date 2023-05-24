@@ -6,7 +6,8 @@ void lcs(string x, string y)
 {
     int m = x.length();
     int n = y.length();
-    int l[m+1][n+1];
+    // int l[m + 1][n + 1];
+    vector<vector<int>> l(m+1,vector<int>(n+1));
     for (int i = 0; i <= m; i++)
     {
         l[i][0] = 0;
@@ -64,7 +65,6 @@ void lcs(string x, string y)
     reverse(lc.begin(), lc.end());
     cout << "The longest subsequence is: " << lc << endl;
 }
-
 int main()
 {
     string x, y;
