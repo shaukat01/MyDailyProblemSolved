@@ -1,81 +1,77 @@
-#include<bits/stdc++.h>
 using namespace std;
-
-void printsolution(vector<vector<int>>&board,int n){
-    for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            cout<<board[i][j]<<" ";
-        }
-        cout<<endl;
-    }
-    cout<<endl;
-}
-
-bool isSafe(int row,int col,vector<vector<int>>&board,int n){
-    int i=row;
-    int j=col;
-    //checking row
-    while(i>=0){
-        if(board[i][j]==1){
+#include <bits/stdc++.h>
+int board[11][11];
+bool isPossible(int n, int row, int col)
+{
+    // for column
+    for (int i = row - 1; i >= 0; i--)
+    {
+        if (board[i][col] == 1)
+        {
             return false;
         }
-        j--;
     }
-    //checking upper left diagonal
-     i=row;
-     j=col;
-   while(i>=0 && j>=0){
-    if(board[i][j]==1){
-        return false;
-    }
-    i--;
-    j--;
-   }
-    //checking lower left diagonal
-     i=row;
-     j=col;
-    while(j>=0 && i<n){ 
-          if(board[i][j]==1){
+    // for upper right
+    for (int i = row - 1, j = col - 1; i >= 0, j >= 0; i--, j--)
+    {
+        if (board[i][j] == 1)
+        {
             return false;
-          }
-          i++;
-          j--;
+        }
     }
-    //kahi pe bhee queeen nahi meela isliye ab queen rakh skate hai
+    //upper left
+    for (int i = row - 1, j = col + 1; i >= 0, j < n; i--, j++)
+    {
+        if (board[i][j] == 1)
+        {
+            return false;
+        }
+    }
     return true;
 }
-
-void solve(vector<vector<int>>&board,int col,int n,int row){
-  //base case
- if(col>=n){
-    printsolution(board,n);
-    return;
- }
- //solve one case
- for(int row=0;row<n;row++){
-    if(isSafe(row,col,board,n)){
-       //rakh do
-       board[row][col]=1;
-       //recursive call
-       solve(board,col+1,n,row);
-       //backtrack
-       board[row][col]=0; 
+// int board[11][11];
+void nQueenHelper(int n, int row)
+{
+    if (row == n)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                cout << board[i][j] << " ";
+            }
+            cout<<endl;
+        }
+        cout << endl;
+        return;
     }
- }
+    for (int col = 0; col < n; col++)
+    {
+        if (isPossible(n, row, col))
+        {
+            board[row][col] = 1;
+            nQueenHelper(n, row + 1);
+            board[row][col] = 0;
+        }
+    }
 }
 
+// arr[3]; 66 98 1 
+//memset(arr,-1,sizeof(arr));
+// -> -1 -1 -1
 
-int main(){
-  int n=4;
-  vector<vector<int>>board(n,vector<int>(n,0));
-  //0-> means empty 
-  //1-> queen at the cell
-  int row=0;
-  int col=0;
-  solve(board,col,n,row);
- 
-
-
+void PlaceNQueen(int n)
+{
+    // memset(board,0,11*11*sizeof(int));
+    for(int i=0;i<11;i++){
+        for(int j=0;j<11;j++) board[i][j]=0;
+    }
+    nQueenHelper(n, 0);
+}
+int main()
+{
+    int n;
+    cin >> n;
+    PlaceNQueen(n);
     return 0;
 }
-

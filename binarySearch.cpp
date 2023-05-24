@@ -1,44 +1,46 @@
+#include<iostream>
 #include<bits/stdc++.h>
 using namespace std;
 
-
-int binarySearch(vector<int>&arr,int key,int s,int e){
-    if(s>e)
-      return -1;
-
-  int mid =(s+e)/2;
-
-  if(arr[mid]==key){
-    return mid;
-
-    if(arr[mid]>key){
-        return binarySearch(arr,key,s,mid-1); 
+int binarySearch(int array[],int low,int high,int key){
+    if(low>high){
+        return -1;
     }
-    else{
-        return binarySearch(arr,key,mid+1,e);
+    int mid=(low+high)/2;
+    if(array[mid]==key){
+        return array[mid];
     }
-  }
+    if(array[mid]>key){
+        return binarySearch(array,low,mid-1,key);
+    }
+       return binarySearch(array,mid+1,high,key);
 }
-
 
 int main(){
-
-   vector<int>arr{8,4,5,6,7,8,9};
-   int target=98;
-   int n=arr.size();
-   int s=0;
-   int e=n-1;
-
-   int ans=binarySearch(arr,target, s,e);
-
-   cout<<"ans is:"<<ans<<endl;
+    cout<<"Enter the size"<<endl;
+  int n;
+   cin>>n;
+//    int x;
+   int array[n];
+   for(int i=0;i<n;i++){
+       cout<<"enter the array element"<<endl;
+       cin>>array[i];
+   }
+   cout<<"enter the low index"<<endl;
+   int low;
+   cin>>low;
+   cout<<"enter the high element"<<endl;
+   int high;
+   cin>>high;
+   cout<<"enter the search key"<<endl;
+   int key;
+   cin>>key;
+    int result=binarySearch(array,low,high,key);     
+  if(result==-1){
+      cout<<"element is not found"<<endl;
+  }
+  else{
+       cout<<"Element is found at index :"<<result-1<<endl;
+  }
     return 0;
 }
-
-
-
-
-
-
-
-
