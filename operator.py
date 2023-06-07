@@ -1,0 +1,13 @@
+# print(5+6)
+# print(5-6)
+# print(5*6)
+# print(2**3)
+# print("/n")
+# print(5%6)
+# print(2%6)
+# print(6%5)
+print("\n")
+print(6/5)
+print(5/6)
+print(6//5)
+print(5//6)   #floor division
