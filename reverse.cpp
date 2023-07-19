@@ -1,62 +1,27 @@
-#include <bits/stdc++.h>
-using namespace std;
+Node* reverseusingLoop(Node* head ) {
+        Node* prev = NULL;
+        Node* curr = head;
 
-
-void reverse(int *arr, int n)
-{
-    int start = 0;
-    int last = n - 1;
-    while (start <= last)
-    {
-        swap(arr[start], arr[last]);
-        start++;
-        last--;
-    }
-}
-
-void print(int *arr, int n)
-{
-    for (int i = 0; i < n; i++)
-    {
-        cout << arr[i] << " ";
-    }
-}
-
-// int main()
-// {
-//     int n;
-//     cin >> n;
-//     int arr[1000];
-//     for (int i = 0; i < n; i++)
-//     {
-//         cin >> arr[i];
-//     }
-//     reverse(arr, n);
-//     print(arr, n);
-//     return 0;
-// }
-
-
-//by using inbuilt function
-int main()
-{
-    int n;
-    cin >> n;
-    int arr[1000];
-    for (int i = 0; i < n; i++)
-    {
-        cin >> arr[i];
-    }
-    reverse(arr, arr + n);
-    for (int i = 0; i < n; i++)
-    {
-        cout << arr[i] << " ";
-    }
+        while(curr != NULL ) {
+                Node* temp = curr ->next;
+                curr ->next = prev;
+                prev = curr;
+                curr = temp;
+        }
+        return prev;
 }
 
 
+Node* reverseusingRecursion(Node* prev, Node* curr) {
+        //base case
+        if(curr == NULL) 
+                return prev;
 
+        Node* temp = curr ->next;
+        curr ->next = prev;
+        prev = curr;
+        curr = temp;
 
-
-
-
+        //recursion sambhal lega
+        return reverseusingRecursion(prev, curr);
+}

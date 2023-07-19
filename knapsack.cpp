@@ -1,62 +1,159 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include<vector>
 using namespace std;
 
-void knapsack(int n, int c, int w[], int p[])
-{
-    // int k[n + 1][c + 1];
-    vector<vector<int> > k(n+1,vector<int>(c+1));
-    for (int i = 0; i <= n; i++)
-    {
-        k[i][0] = 0;
+//index = index  of last element
+int solveUsingRecursion(int weight[], int value[], int index, int capacity) {
+  //base case -> only 1 item
+  if(index == 0 ) {
+    if(weight[0] <= capacity) {
+      return value[0];
     }
-    for (int j = 0; j <= c; j++)
-    {
-        k[0][j] = 0;
-    }
-    for (int i = 1; i <= n; i++)
-    {
-        for (int j = 1; j <= c; j++)
-        {
-            if (j < w[i])
-            {
-                k[i][j] = k[i - 1][j];
-            }
-            else if(j>= w[i])
-            {
-                k[i][j] = max(k[i - 1][j],p[i] + k[i - 1][j - w[i]]);
-            }
-        }
-    }
-    cout << "The knapsack matrix is: " << endl;
-    for (int i = 0; i <= n; i++)
-    {
-        for (int j = 0; j <= c; j++)
-        {
-            cout << k[i][j] << " ";
-        }
-        cout << endl;
-    }
-    cout << "Maximum profit is: " << k[n][c] << endl;
+    else
+      return 0;
+  }
+  //include and exclude
+  int include = 0;
+  if(weight[index] <= capacity)
+    include = value[index] + solveUsingRecursion(weight, value, index-1, capacity - weight[index] );
+
+  int exclude = 0 + solveUsingRecursion(weight, value, index-1, capacity);
+
+  int ans = max(include, exclude);
+  return ans;
 }
-int main()
-{
-    int n, c;
-    cout << "Enter the number of items: " << endl;
-    cin >> n;
-    cout << "Enter the capacity of knapsack: " << endl;
-    cin >> c;
-    int w[n];
-    int p[n];
-    cout << "Enter the individual weights of knapsack: " << endl;
-    for (int i = 0; i < n; i++)
-    {
-        cin >> w[i];
+
+int solveUsingMem(int weight[], int value[], int index, int capacity, vector<vector<int> >& dp) {
+  //base case -> only 1 item
+  if(index == 0 ) {
+    if(weight[0] <= capacity) {
+      return value[0];
     }
-    cout << "Enter the inidividual profits of knapsack: " << endl;
-    for (int i = 0; i < n; i++)
-    {
-        cin >> p[i];
+    else
+      return 0;
+  }
+
+  if(dp[index][capacity] != -1) 
+    return dp[index][capacity];
+
+  //include and exclude
+  int include = 0;
+  if(weight[index] <= capacity)
+    include = value[index] + solveUsingMem(weight, value, index-1, capacity - weight[index], dp);
+
+  int exclude = 0 + solveUsingMem(weight, value, index-1, capacity, dp);
+
+  dp[index][capacity]= max(include, exclude);
+  return dp[index][capacity];
+}
+
+
+int solveUsingTabulation(int weight[], int value[], int n, int capacity) {
+  vector<vector<int> > dp(n, vector<int>(capacity+1 , 0));
+
+  for(int w = weight[0]; w<=capacity; w++) {
+    if(weight[0] <= capacity) {
+      dp[0][w] =  value[0];
     }
-    knapsack(n, c, w, p);
-    return 0;
+    else
+      dp[0][w] =  0;
+  }
+
+  for(int index=1; index<n; index++) {
+    for(int wt=0; wt<=capacity; wt++) {
+      //include and exclude
+      int include = 0;
+      if(weight[index] <= wt)
+        include = value[index] + dp[index-1][wt - weight[index]];
+    
+      int exclude = 0 + dp[index-1][wt];
+    
+      dp[index][wt]= max(include, exclude);
+      
+    }
+  }
+  return dp[n-1][capacity]; 
+}
+
+int solveUsingSO(int weight[], int value[], int n, int capacity) {
+
+  vector<int> prev(capacity+1, 0);
+  vector<int> curr(capacity+1, 0);
+
+  for(int w = weight[0]; w<=capacity; w++) {
+    if(weight[0] <= capacity) {
+      prev[w] =  value[0];
+    }
+    else
+      prev[w] =  0;
+  }
+
+  for(int index=1; index<n; index++) {
+    for(int wt=0; wt<=capacity; wt++) {
+      //include and exclude
+      int include = 0;
+      if(weight[index] <= wt)
+        include = value[index] + prev[wt - weight[index]];
+    
+      int exclude = 0 + prev[wt];
+    
+      curr[wt]= max(include, exclude);
+    }
+    //shift
+    prev = curr;
+  }
+  return prev[capacity];  
+}
+
+int solveUsingSO2(int weight[], int value[], int n, int capacity) {
+
+  
+  vector<int> curr(capacity+1, 0);
+
+  for(int w = weight[0]; w<=capacity; w++) {
+    if(weight[0] <= capacity) {
+      curr[w] =  value[0];
+    }
+    else
+      curr[w] =  0;
+  }
+
+  for(int index=1; index<n; index++) {
+    for(int wt=capacity; wt>=0; wt--) {
+      //include and exclude
+      int include = 0;
+      if(weight[index] <= wt)
+        include = value[index] + curr[wt - weight[index]];
+    
+      int exclude = 0 + curr[wt];
+    
+      curr[wt]= max(include, exclude);
+    }
+    
+  }
+  return curr[capacity];  
+}
+
+
+
+int main() {
+
+  int weight[] = {4,5,1};
+  int value[] = {1,2,3};
+  int n = 3;
+  int capacity = 4;
+
+
+  //int ans = solveUsingRecursion(weight, value, n-1, capacity);
+  
+  
+  vector<vector<int> > dp(n, vector<int>(capacity+1 , -1));
+  int ans = solveUsingMem(weight, value, n-1, capacity, dp);
+   
+  
+//   int ans = solveUsingSO2(weight, value, n, capacity);
+
+  cout << "Ans: " << ans << endl;
+
+  return 0;
 }

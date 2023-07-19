@@ -1,34 +1,37 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int N = 1e3 + 10;
-int graph[N][N];
 int main()
 {
-    int n, m, w;
-    cout << "Enter the value of vertices(n) and edges(m): " << endl;
-    cin >> n >> m;
-    cout << "Enter the vertics which is to connected: " << endl;
-    for (int i = 0; i < m; i++)
-    {
-        int v1, v2;
-        cin >> v1 >> v2;
-        graph[v1][v2] = 1;
-        graph[v2][v1] = 1;
-    }
-    // O(N^2) space complexity
-    // N=1e3
+    int n;
+    cout << "Enter the number of nodes: " << endl;
+    cin >> n;
 
-    // for weighted graph
-    cout << "Enter the value of vertices(n) and edges(m): " << endl;
-    cin >> n >> m;
-    cout << "Enter the vertics which is to connected and thier weights corrosponding: " << endl;
-    for (int i = 0; i < m; i++)
+    int e;
+    cout << "Enter the number of edges: " << endl;
+    cin >> e;
+
+    vector<vector<int>> adj(n, vector<int>(n, 0));
+
+   cout<<"put vertices of graph: "<<endl;
+    for (int i = 0; i < e; i++)
     {
-        int v1, v2;
-        cin >> v1 >> v2 >> w;
-        graph[v1][v2] = w;
-        graph[v2][v1] = w;
+        int u, v;
+        cin >> u >> v;
+        // mark 1
+        adj[u][v] = 1;
+    }
+
+    // printing
+    cout<<"The adjacency Matrix is: "<<endl;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            cout << adj[i][j] << " ";
+        }
+        cout << endl;
     }
     return 0;
 }
+
